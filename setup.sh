@@ -16,14 +16,8 @@ wp db reset --yes && wp db import db.sql
 wp search-replace $(wp option get siteurl) $url
 
 # create .htaccess
-echo '# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
-# END WordPress' > .htaccess
+cat << EOF > wp-cli.yml
+apache_modules:
+  - mod_rewrite
+EOF
+wp rewrite flush --hard
