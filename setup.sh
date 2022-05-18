@@ -21,3 +21,6 @@ apache_modules:
   - mod_rewrite
 EOF
 wp rewrite flush --hard
+
+# delete db.sql setup.sh
+rm -rf db.sql setup.sh
