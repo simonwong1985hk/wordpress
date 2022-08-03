@@ -49,8 +49,14 @@ if ( ! function_exists( 'astra_get_foreground_color' ) ) {
 		}
 
 		// Return if non hex.
-		if ( ! ctype_xdigit( $hex ) ) {
-			return $hex;
+		if ( function_exists( 'ctype_xdigit' ) && is_callable( 'ctype_xdigit' ) ) {
+			if ( ! ctype_xdigit( $hex ) ) {
+				return $hex;
+			}
+		} else {
+			if ( ! preg_match( '/^[a-f0-9]{2,}$/i', $hex ) ) {
+				return $hex;
+			}
 		}
 
 		// Get r, g & b codes from hex code.
@@ -925,12 +931,15 @@ if ( ! function_exists( 'astra_archive_page_info' ) ) {
 		if ( apply_filters( 'astra_the_title_enabled', true ) ) {
 
 			// Author.
-			if ( is_author() ) { ?>
+			if ( is_author() ) {
+				$author_name      = get_the_author() ? get_the_author() : '';
+				$author_name_html = ( true === astra_check_is_structural_setup() && $author_name ) ? __( 'Author name: ', 'astra' ) . $author_name : $author_name;
+				?>
 
 				<section class="ast-author-box ast-archive-description">
 					<div class="ast-author-bio">
 						<?php do_action( 'astra_before_archive_title' ); ?>
-						<h1 class='page-title ast-archive-title'><?php echo get_the_author(); ?></h1>
+						<h1 class='page-title ast-archive-title'><?php echo esc_html( apply_filters( 'astra_author_page_title', $author_name_html ) ); ?></h1>
 						<?php do_action( 'astra_after_archive_title' ); ?>
 						<p><?php echo wp_kses_post( get_the_author_meta( 'description' ) ); ?></p>
 						<?php do_action( 'astra_after_archive_description' ); ?>
@@ -1025,8 +1034,14 @@ if ( ! function_exists( 'astra_adjust_brightness' ) ) {
 		$hex = str_replace( '#', '', $hex );
 
 		// Return if non hex.
-		if ( ! ctype_xdigit( $hex ) ) {
-			return $hex;
+		if ( function_exists( 'ctype_xdigit' ) && is_callable( 'ctype_xdigit' ) ) {
+			if ( ! ctype_xdigit( $hex ) ) {
+				return $hex;
+			}
+		} else {
+			if ( ! preg_match( '/^[a-f0-9]{2,}$/i', $hex ) ) {
+				return $hex;
+			}
 		}
 
 		$shortcode_atts = array(
@@ -1163,7 +1178,7 @@ if ( ! function_exists( 'astra_get_pro_url' ) ) :
 
 		$ref = get_option( 'astra_partner_url_param', '' );
 		if ( ! empty( $ref ) ) {
-			$astra_pro_url = add_query_arg( 'bsf', sanitize_text_field( $ref ), $astra_pro_url );
+			$astra_pro_url = esc_url_raw( add_query_arg( 'bsf', sanitize_text_field( $ref ), $astra_pro_url ) );
 		}
 
 		return $astra_pro_url;
@@ -1454,15 +1469,19 @@ function astra_get_responsive_background_obj( $bg_obj_res, $device ) {
 					} elseif ( $tablet_css ) {
 						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_tab_img . ');';
 					} else {
-						$gen_bg_css['background-color'] = $bg_color . ';';
-						$gen_bg_css['background-image'] = 'none;';
+						if ( '' !== $bg_color ) {
+							$gen_bg_css['background-color'] = $bg_color . ';';
+							$gen_bg_css['background-image'] = 'none;';
+						}
 					}
 				} elseif ( 'tablet' === $device ) {
 					if ( $desktop_css ) {
 						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_desk_img . ');';
 					} else {
-						$gen_bg_css['background-color'] = $bg_color . ';';
-						$gen_bg_css['background-image'] = 'none;';
+						if ( '' !== $bg_color ) {
+							$gen_bg_css['background-color'] = $bg_color . ';';
+							$gen_bg_css['background-image'] = 'none;';
+						}
 					}
 				} elseif ( '' === $bg_img ) {
 					$gen_bg_css['background-color'] = $bg_color . ';';
@@ -1568,4 +1587,14 @@ function astra_block_based_legacy_setup() {
 	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
 	$legacy_setup   = ( isset( $astra_settings['blocks-legacy-setup'] ) && isset( $astra_settings['wp-blocks-ui'] ) && 'legacy' === $astra_settings['wp-blocks-ui'] ) ? true : false;
 	return $legacy_setup;
+}
+
+/**
+ * Check is new strctural things are updated.
+ *
+ * @return bool true|false.
+ */
+function astra_check_is_structural_setup() {
+	$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+	return apply_filters( 'astra_get_option_customizer-default-layout-update', isset( $astra_settings['customizer-default-layout-update'] ) ? false : true );
 }

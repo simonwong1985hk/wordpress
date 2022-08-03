@@ -94,7 +94,7 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			}
 
 			if ( ( ( 'post-new.php' == $pagenow || 'post.php' == $pagenow ) && ( defined( 'ASTRA_ADVANCED_HOOKS_POST_TYPE' ) && ASTRA_ADVANCED_HOOKS_POST_TYPE == $screen->post_type ) ) || 'widgets.php' == $pagenow ) {
-				return;
+				return $classes;
 			}
 
 			$post_id = get_the_ID();
@@ -107,6 +107,19 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 				$content_layout = $meta_content_layout;
 			} else {
 				$content_layout = astra_get_option( 'site-content-layout' );
+			}
+
+			$post_type                     = get_post_type();
+			$editor_default_content_layout = '';
+			if ( 'post' === $post_type || 'page' === $post_type ) {
+				$editor_default_content_layout = astra_get_option( 'single-' . $post_type . '-content-layout' );
+				$classes                      .= ' ast-default-layout-' . $editor_default_content_layout;
+			}
+			if ( 'default' === $editor_default_content_layout || empty( $editor_default_content_layout ) ) {
+				// Get the GLOBAL content layout value.
+				// NOTE: Here not used `true` in the below function call.
+				$editor_default_content_layout = astra_get_option( 'site-content-layout', 'full-width' );
+				$classes                      .= ' ast-default-layout-' . $editor_default_content_layout;
 			}
 
 			if ( 'content-boxed-container' == $content_layout ) {
@@ -122,6 +135,13 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			$site_layout = astra_get_option( 'site-layout' );
 			if ( 'ast-box-layout' === $site_layout ) {
 				$classes .= ' ast-max-width-layout';
+			}
+
+			// block CSS class.
+			if ( astra_block_based_legacy_setup() ) {
+				$classes .= ' ast-block-legacy';
+			} else {
+				$classes .= ' ast-block-custom';
 			}
 
 			$classes .= ' ast-' . astra_page_layout();
@@ -322,6 +342,12 @@ if ( ! class_exists( 'Astra_Enqueue_Scripts' ) ) {
 			);
 
 			wp_localize_script( 'astra-theme-js', 'astra', apply_filters( 'astra_theme_js_localize', $astra_localize ) );
+
+			$astra_cart_localize_data = array(
+				'desktop_layout' => astra_get_option( 'woo-header-cart-click-action' ),    // WooCommerce sidebar flyout desktop.
+			);
+
+			wp_localize_script( 'astra-mobile-cart', 'astra_cart', apply_filters( 'astra_cart_js_localize', $astra_cart_localize_data ) );
 		}
 
 		/**
