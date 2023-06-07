@@ -85,7 +85,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					$val = $input_attrs['min'];
 				}
 
+				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 				$dv = (float) $val / $input_attrs['step'];
+				/** @psalm-suppress InvalidCast */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 
 				$dv = round( $dv );
 
@@ -539,6 +541,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 				'background-position'   => 'center center',
 				'background-size'       => 'auto',
 				'background-attachment' => 'scroll',
+				'overlay-type'          => '',
+				'overlay-color'         => '',
+				'overlay-gradient'      => '',
 				'background-media'      => '',
 				'background-type'       => '',
 			);
@@ -622,6 +627,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					'background-position'   => 'center center',
 					'background-size'       => 'auto',
 					'background-attachment' => 'scroll',
+					'overlay-type'          => '',
+					'overlay-color'         => '',
+					'overlay-gradient'      => '',
 					'background-media'      => '',
 					'background-type'       => '',
 				),
@@ -632,6 +640,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					'background-position'   => 'center center',
 					'background-size'       => 'auto',
 					'background-attachment' => 'scroll',
+					'overlay-type'          => '',
+					'overlay-color'         => '',
+					'overlay-gradient'      => '',
 					'background-media'      => '',
 					'background-type'       => '',
 				),
@@ -642,6 +653,9 @@ if ( ! class_exists( 'Astra_Customizer_Sanitizes' ) ) {
 					'background-position'   => 'center center',
 					'background-size'       => 'auto',
 					'background-attachment' => 'scroll',
+					'overlay-type'          => '',
+					'overlay-color'         => '',
+					'overlay-gradient'      => '',
 					'background-media'      => '',
 					'background-type'       => '',
 				),

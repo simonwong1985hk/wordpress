@@ -333,7 +333,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 						'section'           => $_section,
 						'type'              => 'sub-control',
 						'priority'          => 23,
-						'title'             => __( 'Size', 'astra' ),
+						'title'             => __( 'Font Size', 'astra' ),
 						'transport'         => 'postMessage',
 						'control'           => 'ast-responsive-slider',
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
@@ -346,7 +346,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 							),
 							'em' => array(
 								'min'  => 0,
-								'step' => 1,
+								'step' => 0.01,
 								'max'  => 20,
 							),
 						),
@@ -378,7 +378,7 @@ if ( class_exists( 'Astra_Customizer_Config_Base' ) ) {
 							),
 							'em' => array(
 								'min'  => 0,
-								'step' => 1,
+								'step' => 0.01,
 								'max'  => 20,
 							),
 						),

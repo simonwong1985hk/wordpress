@@ -82,7 +82,7 @@
   height: auto;
   background-color: rgba(221,224,226,0.5);
   border: 1px solid var(--ast-customizer-color-7);
-  border-radius: 4px; 
+  border-radius: 4px;
   cursor: pointer;
   transition: background 0.15s ease, box-shadow 0.15s ease;
 }
@@ -97,17 +97,9 @@
   color: var(--ast-customizer-color-8);
 }
 
-#customize-control-astra-settings-above-header-menu-align .ast-radio-img-svg svg,
-#customize-control-astra-settings-header-main-menu-align .ast-radio-img-svg svg,
-#customize-control-astra-settings-below-header-menu-align .ast-radio-img-svg svg {
-  width: 37px;
-  height: 49px;
-}
-
 /* Image tooltip */
-.image-clickable[data-title]::before,
 .image-clickable[data-title]::after {
-  text-transform: none; 
+  text-transform: none;
   font-size: .9em;
   line-height: 1;
   user-select: none;
@@ -119,18 +111,8 @@
   transform: translate(50%, -.5em);
 }
 
-.image-clickable[data-title]::before {
-  content: '';
-  border: 5px solid transparent;
-  z-index: 1001; 
-  bottom: 100%;
-  border-bottom-width: 0;
-  border-top-color: var(--ast-customizer-color-12);
-  animation: tooltips-vert 300ms ease-out forwards;
-}
-
 .image-clickable[data-title]::after {
-  content: attr(data-title); 
+  content: attr(data-title);
   min-width: 3em;
   max-width: 21em;
   white-space: nowrap;
@@ -141,20 +123,18 @@
   box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, 0.35);
   background: var(--ast-customizer-color-12);
   color: var(--ast-customizer-color-10);
-  z-index: 1000;
+  z-index: 9;
   bottom: calc(100% + 5px);
   text-align: center;
   animation: tooltips-vert 300ms ease-out forwards;
 }
 
 /* Make the tooltips respond to hover */
-.image-clickable[data-title]:hover::before,
 .image-clickable[data-title]:hover::after {
   display: block;
 }
 
 /* don't show empty tooltips */
-.image-clickable[data-title='']::before,
 .image-clickable[data-title='']::after {
   display: none !important;
 }
@@ -172,4 +152,8 @@
     opacity: .9;
     transform: translate(0, -50%);
   }
+}
+
+.ast-upgrade-trigger:hover .image-clickable[data-title]::after {
+    display: block;
 }
